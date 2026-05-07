@@ -11,13 +11,59 @@ echo "======================================"
 echo " Wan2.1 I2V 14B 480p  Q8_0 Download"
 echo "======================================"
 
-# ---------- check huggingface-hub ----------
-if ! python3 -c "import huggingface_hub" 2>/dev/null; then
-    echo "[INFO] Installing huggingface-hub..."
-    pip install -q huggingface-hub
+# ---------- uv venv + huggingface-hub ----------
+VENV="$HOME/.sd-scripts-venv"
+
+if ! command -v uv &>/dev/null; then
+    echo "[INFO] Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$HOME/.local/bin:$PATH"
 fi
 
-HF_DL="python3 -m huggingface_hub download"
+if [ ! -x "$VENV/bin/python" ]; then
+    echo "[INFO] Creating venv..."
+    uv venv "$VENV"
+fi
+
+if ! "$VENV/bin/python" -c "import huggingface_hub" 2>/dev/null; then
+    echo "[INFO] Installing huggingface-hub..."
+    uv pip install --python "$VENV" -q huggingface-hub
+fi
+
+hf_download() {
+    local repo="$1"; shift
+    local include_pattern="" local_dir=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --include)   include_pattern="$2"; shift 2 ;;
+            --local-dir) local_dir="$2";       shift 2 ;;
+            *)           shift ;;
+        esac
+    done
+    mkdir -p "$local_dir"
+
+    if [ -x "$VENV/bin/hf" ]; then
+        local args=("$repo")
+        [ -n "$include_pattern" ] && args+=(--include "$include_pattern")
+        args+=(--local-dir "$local_dir")
+        "$VENV/bin/hf" download "${args[@]}"
+    else
+        echo "[INFO] hf not found, using wget..."
+        local regex
+        regex=$(printf '%s' "$include_pattern" | sed 's/\./\\./g; s/\*/.*/g')
+        curl -fsSL "https://huggingface.co/api/models/${repo}" \
+            | grep -o '"rfilename":"[^"]*"' \
+            | sed 's/"rfilename":"//; s/"//' \
+            | grep -E "$regex" \
+            | while IFS= read -r f; do
+                echo "  -> $f"
+                wget -q --show-progress -c \
+                    "https://huggingface.co/${repo}/resolve/main/${f}" \
+                    -O "$local_dir/$(basename "$f")"
+              done
+    fi
+}
+HF_DL=hf_download
 
 # ---------- 1. Main model ----------
 echo "[1/4] Downloading main model (Wan2.1-I2V-14B-480P Q8_0)..."

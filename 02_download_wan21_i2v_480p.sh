@@ -84,10 +84,10 @@ $HF_DL \
 # ---------- 3. CLIP Vision encoder (ViT-H) ----------
 # Wan2.1 I2V requires a CLIP vision encoder to encode the reference image.
 echo "[3/4] Downloading CLIP Vision ViT-H encoder..."
-echo "      Source: city96/clip-vit-H-14-laion2B-s32B-b79K-GGUF"
+echo "      Source: mys/ggml_CLIP-ViT-H-14-laion2B-s32B-b79K"
 $HF_DL \
-    city96/clip-vit-H-14-laion2B-s32B-b79K-GGUF \
-    --include "*Q8_0*" \
+    mys/ggml_CLIP-ViT-H-14-laion2B-s32B-b79K \
+    --include "*vision-model-q8_0*" \
     --local-dir "$MODEL_DIR/clip_vision"
 
 # ---------- 4. VAE ----------

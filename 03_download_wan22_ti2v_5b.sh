@@ -88,13 +88,18 @@ $HF_DL \
     --local-dir "$MODEL_DIR/t5xxl"
 
 # ---------- 3. VAE ----------
-# Wan2.2 uses the same Wan VAE family.
+# Wan2.2 uses the same VAE as Wan2.1.
 echo "[3/3] Downloading Wan VAE..."
-echo "      Source: city96/Wan2.1-VAE-gguf"
-$HF_DL \
-    city96/Wan2.1-VAE-gguf \
-    --include "*.gguf" \
-    --local-dir "$MODEL_DIR/vae"
+echo "      Source: Comfy-Org/Wan_2.1_ComfyUI_repackaged"
+VAE_FILE="$MODEL_DIR/vae/wan_2.1_vae.safetensors"
+mkdir -p "$MODEL_DIR/vae"
+if [ -f "$VAE_FILE" ]; then
+    echo "  [SKIP] Already downloaded: $VAE_FILE"
+else
+    wget -q --show-progress -c \
+        "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors" \
+        -O "$VAE_FILE"
+fi
 
 echo ""
 echo "======================================"

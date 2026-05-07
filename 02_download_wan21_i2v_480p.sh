@@ -42,6 +42,12 @@ hf_download() {
     done
     mkdir -p "$local_dir"
 
+    local check_pattern="${include_pattern:-*.gguf}"
+    if [ -n "$(find "$local_dir" -maxdepth 2 -name "$check_pattern" 2>/dev/null | head -1)" ]; then
+        echo "  [SKIP] Already downloaded: $local_dir"
+        return 0
+    fi
+
     if [ -x "$VENV/bin/hf" ]; then
         local args=("$repo")
         [ -n "$include_pattern" ] && args+=(--include "$include_pattern")

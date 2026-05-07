@@ -78,11 +78,11 @@ $HF_DL \
     --include "*Q8_0*" \
     --local-dir "$MODEL_DIR/main"
 
-# ---------- 2. T5-XXL text encoder ----------
-echo "[2/4] Downloading T5-XXL text encoder (Q8_0)..."
-echo "      Source: city96/t5-v1_1-xxl-encoder-gguf"
+# ---------- 2. UMT5-XXL text encoder (multilingual, 256k vocab — required for Wan) ----------
+echo "[2/4] Downloading UMT5-XXL text encoder (Q8_0)..."
+echo "      Source: city96/umt5-xxl-encoder-gguf"
 $HF_DL \
-    city96/t5-v1_1-xxl-encoder-gguf \
+    city96/umt5-xxl-encoder-gguf \
     --include "*Q8_0*" \
     --local-dir "$MODEL_DIR/t5xxl"
 

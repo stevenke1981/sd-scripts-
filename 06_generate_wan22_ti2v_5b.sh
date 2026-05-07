@@ -4,11 +4,16 @@
 set -euo pipefail
 
 # ====== USER CONFIG ======
-SD_BIN="$HOME/stable-diffusion.cpp/build/bin/sd"
+SD_BIN="$HOME/stable-diffusion.cpp/build/bin/sd-cli"
 MODEL_DIR="$HOME/models/wan22_ti2v_5b"
 
 INPUT_IMAGE="${1:-input.jpg}"          # arg 1: reference image for I2V
-PROMPT="${2:-A cinematic scene, smooth motion, high quality, 4K}"
+# arg 2: prompt string or path to a .txt file
+if [ -f "${2:-}" ]; then
+    PROMPT=$(cat "$2")
+else
+    PROMPT="${2:-A cinematic scene, smooth motion, high quality, 4K}"
+fi
 NEG_PROMPT="blurry, distorted, ugly, low quality, artifacts"
 
 WIDTH=480

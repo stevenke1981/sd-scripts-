@@ -31,9 +31,9 @@ OUTPUT="$OUTPUT_DIR/output_${TIMESTAMP}.mp4"
 
 mkdir -p "$OUTPUT_DIR"
 
-MAIN_MODEL=$(find "$MODEL_DIR/main"  -name "*Q8_0*" | head -1)
-T5_MODEL=$(find   "$MODEL_DIR/t5xxl" -name "*.gguf" | sort | head -1)
-VAE_MODEL=$(find  "$MODEL_DIR/vae"   \( -name "*.safetensors" -o -name "*.gguf" \) | sort | head -1)
+MAIN_MODEL=$(find "$MODEL_DIR/main"  -not -path "*/.cache/*" -name "*Q8_0*.gguf" | head -1)
+T5_MODEL=$(find   "$MODEL_DIR/t5xxl" -not -path "*/.cache/*" -name "*.gguf" | sort | head -1)
+VAE_MODEL=$(find  "$MODEL_DIR/vae"   -not -path "*/.cache/*" \( -name "*.safetensors" -o -name "*.gguf" \) | sort | head -1)
 
 echo "======================================"
 echo " Wan2.2 TI2V 5B — Vulkan (No CLIP-Vision)"

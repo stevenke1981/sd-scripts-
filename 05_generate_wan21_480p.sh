@@ -32,10 +32,10 @@ OUTPUT="$OUTPUT_DIR/output_${TIMESTAMP}.mp4"
 mkdir -p "$OUTPUT_DIR"
 
 # Resolve model files — prefer Q8_0 for main model
-MAIN_MODEL=$(find "$MODEL_DIR/main"        -name "*Q8_0*" | head -1)
-T5_MODEL=$(find   "$MODEL_DIR/t5xxl"       -name "*.gguf" | sort | head -1)
-CLIP_VIS=$(find   "$MODEL_DIR/clip_vision" -name "*.gguf" | sort | head -1)
-VAE_MODEL=$(find  "$MODEL_DIR/vae"         \( -name "*.safetensors" -o -name "*.gguf" \) | sort | head -1)
+MAIN_MODEL=$(find "$MODEL_DIR/main"        -not -path "*/.cache/*" -name "*Q8_0*.gguf" | head -1)
+T5_MODEL=$(find   "$MODEL_DIR/t5xxl"       -not -path "*/.cache/*" -name "*.gguf" | sort | head -1)
+CLIP_VIS=$(find   "$MODEL_DIR/clip_vision" -not -path "*/.cache/*" -name "*.gguf" | sort | head -1)
+VAE_MODEL=$(find  "$MODEL_DIR/vae"         -not -path "*/.cache/*" \( -name "*.safetensors" -o -name "*.gguf" \) | sort | head -1)
 
 echo "======================================"
 echo " Wan2.1 I2V 14B 480p — Vulkan"

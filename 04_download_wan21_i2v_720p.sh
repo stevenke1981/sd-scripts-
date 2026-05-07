@@ -75,7 +75,7 @@ echo "[1/4] Downloading main model (Wan2.1-I2V-14B-720P Q8_0)..."
 echo "      Source: city96/Wan2.1-I2V-14B-720P-gguf"
 $HF_DL \
     city96/Wan2.1-I2V-14B-720P-gguf \
-    --include "*.gguf" \
+    --include "*Q8_0*" \
     --local-dir "$MODEL_DIR/main"
 
 # ---------- 2. T5-XXL text encoder ----------

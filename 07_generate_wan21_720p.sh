@@ -33,7 +33,7 @@ OUTPUT="$OUTPUT_DIR/output_${TIMESTAMP}.mp4"
 
 mkdir -p "$OUTPUT_DIR"
 
-MAIN_MODEL=$(find "$MODEL_DIR/main"        -name "*.gguf" | sort | head -1)
+MAIN_MODEL=$(find "$MODEL_DIR/main"        -name "*Q8_0*" | head -1)
 T5_MODEL=$(find   "$MODEL_DIR/t5xxl"       -name "*.gguf" | sort | head -1)
 CLIP_VIS=$(find   "$MODEL_DIR/clip_vision" -name "*.gguf" | sort | head -1)
 VAE_MODEL=$(find  "$MODEL_DIR/vae"         \( -name "*.safetensors" -o -name "*.gguf" \) | sort | head -1)

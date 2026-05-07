@@ -30,10 +30,10 @@ sudo apt-get install -y \
 # echo "deb [signed-by=/usr/share/keyrings/lunarg-archive-keyring.gpg] https://packages.lunarg.com/vulkan jammy main" | sudo tee /etc/apt/sources.list.d/lunarg-vulkan.list
 # sudo apt-get update && sudo apt-get install -y vulkan-sdk
 
-echo "[2/4] Fetching stable-diffusion.cpp..."
+echo "[2/4] Fetching stable-diffusion.cpp (latest master required for Wan 5D tensor support)..."
 if [ -d "$SD_DIR/.git" ]; then
     echo "  → Existing repo found, pulling latest..."
-    git -C "$SD_DIR" pull
+    git -C "$SD_DIR" pull --ff-only
     git -C "$SD_DIR" submodule update --init --recursive
 else
     git clone --recursive https://github.com/leejet/stable-diffusion.cpp "$SD_DIR"
@@ -50,7 +50,7 @@ cmake --build "$SD_DIR/build" --config "$BUILD_TYPE" -j"$JOBS"
 echo ""
 echo "======================================"
 echo " Build complete!"
-echo " Binary : $SD_DIR/build/bin/sd"
+echo " Binary : $SD_DIR/build/bin/sd-cli"
 echo "======================================"
 
 # Verify Vulkan device is visible

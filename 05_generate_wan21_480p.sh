@@ -61,7 +61,7 @@ fi
 "$SD_BIN" \
     --model          "$MAIN_MODEL" \
     --t5xxl          "$T5_MODEL" \
-    --clip-l-vision  "$CLIP_VIS" \
+    --clip_vision    "$CLIP_VIS" \
     --vae            "$VAE_MODEL" \
     --vae-on-cpu \
     --init-img       "$INPUT_IMAGE" \

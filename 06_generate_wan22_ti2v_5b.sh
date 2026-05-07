@@ -23,7 +23,6 @@ STEPS=30
 CFG_SCALE=7.0
 SEED=-1
 FPS=16
-VK_DEVICE=0
 
 OUTPUT_DIR="$HOME/sd-outputs/wan22_5b"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -70,7 +69,6 @@ fi
     --steps         $STEPS \
     --cfg-scale     $CFG_SCALE \
     --seed          $SEED \
-    --vk-device     $VK_DEVICE \
     --output        "$OUTPUT"
 
 echo ""
